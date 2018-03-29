@@ -23,10 +23,11 @@ static void run_test(test_implementation_t implementation, uint8 *begin, uint8 *
     clock_t start;
     clock_t duration;
     int32 msec;
+    int32 c;
 
     printf("Run test with '%s' (Expected bit count: %d) ...\n", implementation.name, expected);
     start = clock();
-    for (int32 c=0; c < iterations; c++) {
+    for (c=0; c < iterations; c++) {
         int32 count = implementation.impl_function(begin, end);
         if (count != expected) {
             fprintf(stderr, "Incorrect bitcount: %d, expected: %d\n", count, expected);
@@ -43,14 +44,15 @@ static void test1(test_implementation_t* implementations, int32 n) {
     bits8 bytes[size];
     uint8 *begin;
     uint8 *end;
+    int32 i;
 
-    for (int32 i=0; i < size; i++) {
+    for (i=0; i < size; i++) {
         bytes[i] = (bits8)1;
     }
 
     printf("=== Test 1 ===\n");
 
-    for (int32 i=0; i < n; i++) {
+    for (i=0; i < n; i++) {
         begin = &(bytes[0]);
         end = &(bytes[size]);
         run_test(implementations[i], begin, end, size);
@@ -62,14 +64,15 @@ static void test2(test_implementation_t* implementations, int32 n) {
     bits8 bytes[size];
     uint8 *begin;
     uint8 *end;
+    int32 i;
 
-    for (int32 i=0; i < size; i++) {
+    for (i=0; i < size; i++) {
         bytes[i] = (bits8)255;
     }
 
     printf("=== Test 2 ===\n");
 
-    for (int32 i=0; i < n; i++) {
+    for (i=0; i < n; i++) {
         begin = &(bytes[0]);
         end = &(bytes[size]);
         run_test(implementations[i], begin, end, size*8);
@@ -81,14 +84,15 @@ static void test3(test_implementation_t* implementations, int32 n) {
     bits8 bytes[size];
     uint8 *begin;
     uint8 *end;
+    int32 i;
 
-    for (int32 i=0; i < size; i++) {
+    for (i=0; i < size; i++) {
         bytes[i] = (bits8)0;
     }
 
     printf("=== Test 3 ===\n");
 
-    for (int32 i=0; i < n; i++) {
+    for (i=0; i < n; i++) {
         begin = &(bytes[0]);
         end = &(bytes[size]);
         run_test(implementations[i], begin, end, 0);
@@ -114,4 +118,7 @@ int main (int argc, char *argv[]) {
     test1(implementations, N);
     test2(implementations, N);
     test3(implementations, N);
+
+    // Success
+    return 0;
 }
