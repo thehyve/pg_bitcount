@@ -12,8 +12,8 @@ include $(PGXS)
 # performance comparison tool
 performance_tester: src/performance_test.o
 	$(CC) $(CFLAGS) -o performance_tester src/performance_test.o
-	
+
 .PHONY : clean
 clean :
-	-rm performance_tester src/*.o src/*.so
+	rm -f performance_tester src/*.o src/*.so
 
