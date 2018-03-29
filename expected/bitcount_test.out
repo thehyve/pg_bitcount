@@ -1,0 +1,19 @@
+create extension pg_bitcount;
+select pg_bitcount(B'1'::bit(1));
+ pg_bitcount 
+-------------
+           1
+(1 row)
+
+select pg_bitcount(B'0');
+ pg_bitcount 
+-------------
+           0
+(1 row)
+
+select pg_bitcount(B'101010101');
+ pg_bitcount 
+-------------
+           5
+(1 row)
+

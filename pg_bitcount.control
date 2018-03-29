@@ -1,0 +1,5 @@
+# pg_bitcount extension
+comment = 'pg_bitcount function'
+default_version = '0.0.1'
+relocatable = true
+
