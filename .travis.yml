@@ -1,0 +1,39 @@
+os:
+  - linux
+sudo: true
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+addons:
+  apt:
+    packages:
+      - postgresql-server-dev-all
+
+stage: compile
+
+before_install:
+  - make clean
+  - make
+  - make performance_tester
+
+before_script:
+  - sudo make install
+
+script:
+  - make installcheck
+  - ./performance_tester
+
+jobs:
+  include:
+    - stage: test
+      env: POSTGRESQL_VERSION=9.4
+      addons:
+        postgresql: "9.4"
+    - stage: test
+      env: POSTGRESQL_VERSION=9.6
+      addons:
+        postgresql: "9.6"
+
