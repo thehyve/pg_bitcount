@@ -19,6 +19,7 @@ const uint8 uint8_bits[256] = {
 
 /**
  * \brief Use a dictionary of bit counts for all bytes.
+ * Similar to http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetTable.
  */
 inline int32 bitcount_dictionary(uint8 *data, uint8 *end) {
     int32 count = 0;
@@ -76,6 +77,23 @@ inline int32 bitcount_wegner(uint8 *data, uint8 *end) {
         {
           v &= v - 1; // clear the least significant bit set
         }
+        ++p;
+    }
+    return count;
+}
+
+/**
+ * Counting bits set in 14-bit words using 64-bit instructions,
+ * taken from the list by Sean Eron Anderson,,
+ * see http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSet64
+ */
+inline int32 bitcount_64bit(uint8 *data, uint8 *end) {
+    uint32 count = 0;
+    uint8 *p = data;
+    uint8 v;
+    while (p < end) {
+        v = *p;
+        count += (v * 0x200040008001ULL & 0x111111111111111ULL) % 0xf;
         ++p;
     }
     return count;

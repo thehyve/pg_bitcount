@@ -99,14 +99,15 @@ static void test3(test_implementation_t* implementations, int32 n) {
     }
 }
 
-#define N 4
+#define N 5
 
 int main (int argc, char *argv[]) {
     test_implementation_t implementations[N] = {
         create_implementation("dictionary", &bitcount_dictionary),
         create_implementation("popcount", &bitcount_popcount),
         create_implementation("psnip", &bitcount_psnip),
-        create_implementation("wegner", &bitcount_wegner)
+        create_implementation("wegner", &bitcount_wegner),
+        create_implementation("64bit", &bitcount_64bit)
     };
 
 #if PSNIP_BUILTIN_GNU_HAS_BUILTIN(__builtin_popcount, 3, 4)
