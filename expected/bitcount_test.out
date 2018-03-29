@@ -1,19 +1,40 @@
 create extension pg_bitcount;
-select pg_bitcount(B'1'::bit(1));
- pg_bitcount 
--------------
-           1
-(1 row)
-
+-- Check some small numbers
 select pg_bitcount(B'0');
  pg_bitcount 
 -------------
            0
 (1 row)
 
+select pg_bitcount(B'1'::bit(1));
+ pg_bitcount 
+-------------
+           1
+(1 row)
+
 select pg_bitcount(B'101010101');
  pg_bitcount 
 -------------
            5
+(1 row)
+
+-- Check exhaustively for the numbers 0 to 2^20.
+select bool_and(public.pg_bitcount(i::bit(64)) = length(replace(i::bit(64)::text, '0', ''))) as check
+from (select generate_series(0, (2^20)::bigint) as i) data;
+ check 
+-------
+ t
+(1 row)
+
+-- Check a 128 bit value
+select
+  data::text,
+  public.pg_bitcount(bits) as bitcount,
+  length(replace(bits::text, '0', '')) as bitcount_reference,
+  public.pg_bitcount(bits) = length(replace(bits::text, '0', '')) as check
+from (select (17^15)::bigint::bit(128) << 64 | (17^14)::bigint::bit(128) as bits) data;
+                                                                data                                                                | bitcount | bitcount_reference | check 
+------------------------------------------------------------------------------------------------------------------------------------+----------+--------------------+-------
+ (00100111101110010101111010011001011111100010000111011010000000000000001001010110001100101011110110111100001000000001101111100000) |       58 |                 58 | t
 (1 row)
 
