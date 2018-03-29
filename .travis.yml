@@ -8,22 +8,27 @@ compiler:
   - gcc
 
 addons:
+  postgresql: "9.6"
   apt:
+    sources:
+      - ubuntu-toolchain-r-test # for gcc-7
     packages:
-      - postgresql-server-dev-all
+      - g++-7
+      - gcc-7
+      - postgresql-server-dev-9.6
 
 stage: compile
 
 before_install:
+  - ls -l /usr/lib/postgresql/
+  - pushd /usr/lib/postgresql/; find -name "*pgxs*"; popd
   - make clean
+
+install:
   - make
   - make performance_tester
 
-before_script:
-  - sudo make install
-
 script:
-  - make installcheck
   - ./performance_tester
 
 jobs:
@@ -32,8 +37,30 @@ jobs:
       env: POSTGRESQL_VERSION=9.4
       addons:
         postgresql: "9.4"
+        apt:
+          packages:
+            - postgresql-server-dev-9.4
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
     - stage: test
       env: POSTGRESQL_VERSION=9.6
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
+    - stage: test
+      env: POSTGRESQL_VERSION=10; PGPORT=5433
       addons:
-        postgresql: "9.6"
+        postgresql: "10"
+        apt:
+          packages:
+            - postgresql-server-dev-all
+            - postgresql-10
+            - postgresql-client-10
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
 
