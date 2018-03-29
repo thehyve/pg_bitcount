@@ -15,5 +15,4 @@ performance_tester: src/performance_test.o
 
 .PHONY : clean
 clean :
-	rm -f performance_tester src/*.o src/*.so
-
+	rm -f performance_tester *.so src/*.o src/*.so *.out *.diffs 
