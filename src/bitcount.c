@@ -3,11 +3,12 @@
 #include "bitcount.h"
 #include "builtin.h"
 
+
 /**
  * The number of bits per byte. For a number i (i >=0, i < 256), the
  * value uint8_bits[i] equals the number of bits set in i.
  */
-const uint8 uint8_bits[256] = {
+static const uint8 uint8_bits[256] = {
     0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 1, 2, 2, 3, 2, 3, 3,
     4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4,
     4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4,
@@ -42,6 +43,27 @@ inline int32 bitcount_popcount(uint8 *data, uint8 *end) {
     while (p < end) {
         count += psnip_builtin_popcount(*p);
         ++p;
+    }
+    return count;
+}
+
+/**
+ * Use the builtin compiler function __builtin_popcountll if available.
+ * builtin.h from Portable Snippets is used to ensure portable code,
+ * see https://github.com/nemequ/portable-snippets/tree/master/builtin.
+ */
+inline int32 bitcount_popcountll(uint8 *data, uint8 *end) {
+    int32 count = 0;
+    uint8 *p = data;
+    uint64 word;
+    uint8 i;
+    while (p < end) {
+        word = 0;
+        for (i=0; i < 8 && p < end; i++) {
+            word &= (*p) << i*8;
+            ++p;
+        }
+        count += psnip_builtin_popcountll(word);
     }
     return count;
 }
@@ -108,6 +130,6 @@ inline int32 bitcount_64bit(uint8 *data, uint8 *end) {
  *     int32 number_of_bits = bitcount(&(bytes[0]), &(bytes[2]));
  * \return the number of bits set in the array.
  */
-int32 bitcount(uint8 *data, uint8 *end) {
+inline int32 bitcount(uint8 *data, uint8 *end) {
     return bitcount_dictionary(data, end);
 }

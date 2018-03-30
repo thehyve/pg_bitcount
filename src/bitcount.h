@@ -11,6 +11,8 @@ int32 bitcount_dictionary(uint8 *begin, uint8 *end);
 
 int32 bitcount_popcount(uint8 *begin, uint8 *end);
 
+int32 bitcount_popcountll(uint8 *begin, uint8 *end);
+
 int32 bitcount_psnip(uint8 *begin, uint8 *end);
 
 int32 bitcount_wegner(uint8 *data, uint8 *end);
