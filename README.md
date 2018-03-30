@@ -6,7 +6,7 @@ PostgreSQL extension providing a bitcount function.
 
 ## Build
 
-Build the extension.
+Build the extension:
 
 ```bash
 make
@@ -33,7 +33,7 @@ make installcheck
 Install the extension into the PostgreSQL library directory:
 
 ```bash
-make clean && maken && sudo make install
+make clean && make && sudo make install
 ```
 
 
