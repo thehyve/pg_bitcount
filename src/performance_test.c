@@ -47,7 +47,7 @@ static void test1(test_implementation_t* implementations, int32 n) {
     int32 i;
 
     for (i=0; i < size; i++) {
-        bytes[i] = (bits8)1;
+        bytes[i] = (bits8)(i % 256);
     }
 
     printf("=== Test 1 ===\n");
@@ -55,7 +55,7 @@ static void test1(test_implementation_t* implementations, int32 n) {
     for (i=0; i < n; i++) {
         begin = &(bytes[0]);
         end = &(bytes[size]);
-        run_test(implementations[i], begin, end, size);
+        run_test(implementations[i], begin, end, 4096);
     }
 }
 
@@ -99,12 +99,13 @@ static void test3(test_implementation_t* implementations, int32 n) {
     }
 }
 
-#define N 5
+#define N 6
 
 int main (int argc, char *argv[]) {
     test_implementation_t implementations[N] = {
         create_implementation("dictionary", &bitcount_dictionary),
         create_implementation("popcount", &bitcount_popcount),
+        create_implementation("popcountll", &bitcount_popcount),
         create_implementation("psnip", &bitcount_psnip),
         create_implementation("wegner", &bitcount_wegner),
         create_implementation("64bit", &bitcount_64bit)
