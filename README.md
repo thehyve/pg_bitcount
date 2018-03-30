@@ -6,7 +6,15 @@ PostgreSQL extension providing a bitcount function.
 
 ## Build
 
-Build the extension:
+### Dependencies
+
+The PostgreSQL extension build tool needs to be installed.
+```bash
+# For Ubuntu/Debian:
+sudo apt install postgresql-server-dev-all
+```
+
+### Build the extension
 
 ```bash
 make
