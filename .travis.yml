@@ -3,19 +3,23 @@ os:
 sudo: true
 language: c
 
-compiler:
-  - clang
-  - gcc
-
 addons:
   postgresql: "9.6"
   apt:
     sources:
-      - ubuntu-toolchain-r-test # for gcc-7
+      - ubuntu-toolchain-r-test # for gcc-5 and gcc-7
     packages:
+      - g++-5
+      - gcc-5
       - g++-7
       - gcc-7
       - postgresql-server-dev-9.6
+
+compiler: 
+  - gcc
+  - gcc-5
+  - gcc-7
+  - clang
 
 stage: compile
 
