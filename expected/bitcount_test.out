@@ -1,4 +1,11 @@
 create extension pg_bitcount;
+\df pg_bitcount
+                           List of functions
+ Schema |    Name     | Result data type | Argument data types |  Type  
+--------+-------------+------------------+---------------------+--------
+ public | pg_bitcount | integer          | bit                 | normal
+(1 row)
+
 -- Check some small numbers
 select pg_bitcount(B'0');
  pg_bitcount 
@@ -37,4 +44,74 @@ from (select (17^15)::bigint::bit(128) << 64 | (17^14)::bigint::bit(128) as bits
 ------------------------------------------------------------------------------------------------------------------------------------+----------+--------------------+-------
  (00100111101110010101111010011001011111100010000111011010000000000000001001010110001100101011110110111100001000000001101111100000) |       58 |                 58 | t
 (1 row)
+
+\df pg_int_to_bit_agg
+                             List of functions
+ Schema |       Name        | Result data type | Argument data types | Type 
+--------+-------------------+------------------+---------------------+------
+ public | pg_int_to_bit_agg | bit              | integer, integer    | agg
+(1 row)
+
+-- Aggregate numbers to a bit string
+select pg_int_to_bit_agg(i::int, 24)::text as bits
+from (select generate_series(2, 8) as i) data;
+           bits           
+--------------------------
+ 001111111000000000000000
+(1 row)
+
+select pg_int_to_bit_agg(i::int, 24)::text as bits
+from (select generate_series(0, 3) as i) data;
+           bits           
+--------------------------
+ 111100000000000000000000
+(1 row)
+
+-- Aggregating over an empty set requires coalescing 
+select coalesce(pg_int_to_bit_agg(i::int, 10), 0::bit(10))::text as bits
+from (select 0 as i) data where i > 0;
+    bits    
+------------
+ 0000000000
+(1 row)
+
+-- Count bits of aggregate numbers
+select pg_bitcount(pg_int_to_bit_agg(i::int, 24))
+from (select generate_series(2, 8) as i) data;
+ pg_bitcount 
+-------------
+           7
+(1 row)
+
+-- Error on exceeding bit length 
+select pg_int_to_bit_agg(i::int, 24)::text
+from (select generate_series(20, 32) as i) data;
+ERROR:  bit index 24 out of valid range (0..24)
+select pg_int_to_bit_agg(i::int, 24)::text
+from (select generate_series(-5, 5) as i) data;
+ERROR:  bit index -5 out of valid range (0..24)
+-- Check aggregate with get_bit. Expect bits 3 and 4 to be set.
+select i, get_bit(pg_int_to_bit_agg(j::int, 16), i) as result
+from (select generate_series(3, 4) as j) selection,
+(select generate_series(0, 15) as i) data
+group by i order by i;
+ i  | result 
+----+--------
+  0 |      0
+  1 |      0
+  2 |      0
+  3 |      1
+  4 |      1
+  5 |      0
+  6 |      0
+  7 |      0
+  8 |      0
+  9 |      0
+ 10 |      0
+ 11 |      0
+ 12 |      0
+ 13 |      0
+ 14 |      0
+ 15 |      0
+(16 rows)
 

@@ -1,5 +1,7 @@
 create extension pg_bitcount;
 
+\df pg_bitcount
+
 -- Check some small numbers
 select pg_bitcount(B'0');
 select pg_bitcount(B'1'::bit(1));
@@ -17,3 +19,32 @@ select
   pg_bitcount(bits) = length(replace(bits::text, '0', '')) as check
 from (select (17^15)::bigint::bit(128) << 64 | (17^14)::bigint::bit(128) as bits) data;
 
+\df pg_int_to_bit_agg
+
+-- Aggregate numbers to a bit string
+select pg_int_to_bit_agg(i::int, 24)::text as bits
+from (select generate_series(2, 8) as i) data;
+
+select pg_int_to_bit_agg(i::int, 24)::text as bits
+from (select generate_series(0, 3) as i) data;
+
+-- Aggregating over an empty set requires coalescing 
+select coalesce(pg_int_to_bit_agg(i::int, 10), 0::bit(10))::text as bits
+from (select 0 as i) data where i > 0;
+
+-- Count bits of aggregate numbers
+select pg_bitcount(pg_int_to_bit_agg(i::int, 24))
+from (select generate_series(2, 8) as i) data;
+
+-- Error on exceeding bit length 
+select pg_int_to_bit_agg(i::int, 24)::text
+from (select generate_series(20, 32) as i) data;
+
+select pg_int_to_bit_agg(i::int, 24)::text
+from (select generate_series(-5, 5) as i) data;
+
+-- Check aggregate with get_bit. Expect bits 3 and 4 to be set.
+select i, get_bit(pg_int_to_bit_agg(j::int, 16), i) as result
+from (select generate_series(3, 4) as j) selection,
+(select generate_series(0, 15) as i) data
+group by i order by i;
