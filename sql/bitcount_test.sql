@@ -48,3 +48,17 @@ select i, get_bit(pg_int_to_bit_agg(j::int, 16), i) as result
 from (select generate_series(3, 4) as j) selection,
 (select generate_series(0, 15) as i) data
 group by i order by i;
+
+-- Check aggregation with null values in the data
+create temporary table bitset_testdata (value int);
+insert into bitset_testdata values
+  (1),
+  (2),
+  (null),
+  (7);
+
+-- Expect the first bit not to be set
+select public.pg_int_to_bit_agg(value, 10)::text from bitset_testdata;
+
+-- Expect true
+select get_bit(public.pg_int_to_bit_agg(value, 10), 0) = 0 as check from bitset_testdata;
