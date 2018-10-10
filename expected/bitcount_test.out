@@ -115,3 +115,24 @@ group by i order by i;
  15 |      0
 (16 rows)
 
+-- Check aggregation with null values in the data
+create temporary table bitset_testdata (value int);
+insert into bitset_testdata values
+  (1),
+  (2),
+  (null),
+  (7);
+-- Expect the first bit not to be set
+select public.pg_int_to_bit_agg(value, 10)::text from bitset_testdata;
+ pg_int_to_bit_agg 
+-------------------
+ 0110000100
+(1 row)
+
+-- Expect true
+select get_bit(public.pg_int_to_bit_agg(value, 10), 0) = 0 as check from bitset_testdata;
+ check 
+-------
+ t
+(1 row)
+

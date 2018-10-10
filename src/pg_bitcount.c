@@ -45,9 +45,10 @@ pg_int_to_bit_agg_transfn(PG_FUNCTION_ARGS)
         state = PG_GETARG_VARBIT_P(0);
     }
 
-    value = PG_GETARG_INT32(1);
-
-    setBitAtPosition(state, value);
+    if (!PG_ARGISNULL(1)) {
+        value = PG_GETARG_INT32(1);
+        setBitAtPosition(state, value);
+    }
 
     PG_RETURN_VARBIT_P(state);
 }

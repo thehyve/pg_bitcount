@@ -1,5 +1,5 @@
 EXTENSION = pg_bitcount       # the extensions name
-DATA = pg_bitcount--0.0.2.sql  # script files to install
+DATA = pg_bitcount--0.0.3.sql  # script files to install
 REGRESS = bitcount_test
 
 # postgres build stuff

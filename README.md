@@ -49,7 +49,7 @@ make clean && make && sudo make install
 
 ```sql
 -- Register the extension in PostgreSQL
-create extension pg_bitcount;
+create extension pg_bitcount version '0.0.3';
 
 -- Use the pg_bitcount function
 select public.pg_bitcount(127::bit(8)); -- 7
