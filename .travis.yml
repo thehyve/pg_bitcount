@@ -60,7 +60,7 @@ jobs:
         postgresql: "10"
         apt:
           packages:
-            - postgresql-server-dev-all
+            - postgresql-server-dev-10
             - postgresql-10
             - postgresql-client-10
       before_script:
