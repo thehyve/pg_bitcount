@@ -60,3 +60,23 @@ build_job_9.6:
   stage: build
   script:
   - ./build.sh
+
+build_job_10:
+  dependencies:
+  - compile_job_10
+  variables:
+    PG_VER: "10"
+  image: registry.gitlab.com/containertools/containertools:${RELEASE}
+  stage: build
+  script:
+  - ./build.sh
+
+build_job_11:
+  dependencies:
+  - compile_job_11
+  variables:
+    PG_VER: "11"
+  image: registry.gitlab.com/containertools/containertools:${RELEASE}
+  stage: build
+  script:
+  - ./build.sh
