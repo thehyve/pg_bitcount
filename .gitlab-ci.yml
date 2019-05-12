@@ -52,7 +52,8 @@ compile_job_11:
   - make
 
 build_job_9.6:
-  dependencies: compile_job_9.6
+  dependencies:
+  - compile_job_9.6
   variables:
     PG_VER: "9.6"
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
