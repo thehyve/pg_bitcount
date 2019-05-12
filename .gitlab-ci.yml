@@ -1,0 +1,50 @@
+stages:
+- compile
+- build
+- test
+
+compile_job_9.6:
+  variables:
+    PG_VER: "9.6"
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  stage: compile
+  artifacts:
+    name: "$CI_JOB_NAME"
+    when: on_success
+    expire_in: 1h
+    paths:
+    - pg_bitcount*
+  script:
+  - make
+
+compile_job_10:
+  variables:
+    PG_VER: "10"
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  stage: compile
+  artifacts:
+    name: "$CI_JOB_NAME"
+    when: on_success
+    expire_in: 1h
+    paths:
+    - pg_bitcount*
+  script:
+  - make
+
+compile_job_11:
+  variables:
+    PG_VER: "11"
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  stage: compile
+  artifacts:
+    name: "$CI_JOB_NAME"
+    when: on_success
+    expire_in: 1h
+    paths:
+    - pg_bitcount*
+  script:
+  - make
+
