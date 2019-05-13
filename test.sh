@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+PGPASSWORD=${POSTGRES_PASSWORD}
+PGUSER=${POSTGRES_USER}
+PGDATABASE=${POSTGRES_DB}
+make installcheck
