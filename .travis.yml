@@ -15,7 +15,7 @@ addons:
       - gcc-7
       - postgresql-server-dev-9.6
 
-compiler: 
+compiler:
   - gcc
   - gcc-5
   - gcc-7
@@ -60,11 +60,22 @@ jobs:
         postgresql: "10"
         apt:
           packages:
-            - postgresql-server-dev-all
+            - postgresql-server-dev-10
             - postgresql-10
             - postgresql-client-10
       before_script:
         - sudo make install
       script:
         - make installcheck
-
+    - stage: test
+      env: POSTGRESQL_VERSION=11; PGPORT=5433
+      addons:
+        postgresql: "11"
+      before_install:
+        - sudo apt-get --yes remove postgresql-9.2
+        - sudo apt-get --yes install postgresql-server-dev-11 postgresql-11 postgresql-client-11
+        - sudo -u postgres psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;'
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck

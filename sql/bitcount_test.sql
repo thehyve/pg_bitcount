@@ -1,6 +1,6 @@
 create extension pg_bitcount;
 
-\df pg_bitcount
+select extname, extversion from pg_extension where extname = 'pg_bitcount';
 
 -- Check some small numbers
 select pg_bitcount(B'0');
@@ -28,7 +28,7 @@ from (select generate_series(2, 8) as i) data;
 select pg_int_to_bit_agg(i::int, 24)::text as bits
 from (select generate_series(0, 3) as i) data;
 
--- Aggregating over an empty set requires coalescing 
+-- Aggregating over an empty set requires coalescing
 select coalesce(pg_int_to_bit_agg(i::int, 10), 0::bit(10))::text as bits
 from (select 0 as i) data where i > 0;
 
@@ -36,7 +36,7 @@ from (select 0 as i) data where i > 0;
 select pg_bitcount(pg_int_to_bit_agg(i::int, 24))
 from (select generate_series(2, 8) as i) data;
 
--- Error on exceeding bit length 
+-- Error on exceeding bit length
 select pg_int_to_bit_agg(i::int, 24)::text
 from (select generate_series(20, 32) as i) data;
 
