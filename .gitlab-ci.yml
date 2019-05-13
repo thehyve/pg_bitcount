@@ -5,6 +5,9 @@ stages:
 
 variables:
   RELEASE: "30"
+  POSTGRES_DB: nice_marmot
+  POSTGRES_USER: runner
+  POSTGRES_PASSWORD: password
 
 compile_job_9.6:
   variables:
@@ -80,3 +83,21 @@ build_job_11:
   stage: build
   script:
   - ./build.sh
+
+test_job_9.6:
+  dependencies:
+  - build_job_9.6
+  stage: test
+  variables:
+    PG_VER: 9.6
+    PGPASSWORD: ${POSTGRES_PASSWORD}
+    PGHOST: postgres
+    PGUSER: ${POSTGRES_USER}
+    PGDATABASE: ${POSTGRES_DB}
+  services:
+  - name: registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
+    alias: postgres
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  script:
+  - make installcheck
