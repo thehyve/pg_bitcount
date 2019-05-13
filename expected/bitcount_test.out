@@ -1,9 +1,8 @@
 create extension pg_bitcount;
-\df pg_bitcount
-                           List of functions
- Schema |    Name     | Result data type | Argument data types |  Type  
---------+-------------+------------------+---------------------+--------
- public | pg_bitcount | integer          | bit                 | normal
+select extname, extversion from pg_extension where extname = 'pg_bitcount';
+   extname   | extversion 
+-------------+------------
+ pg_bitcount | 0.0.3
 (1 row)
 
 -- Check some small numbers
@@ -67,7 +66,7 @@ from (select generate_series(0, 3) as i) data;
  111100000000000000000000
 (1 row)
 
--- Aggregating over an empty set requires coalescing 
+-- Aggregating over an empty set requires coalescing
 select coalesce(pg_int_to_bit_agg(i::int, 10), 0::bit(10))::text as bits
 from (select 0 as i) data where i > 0;
     bits    
@@ -83,7 +82,7 @@ from (select generate_series(2, 8) as i) data;
            7
 (1 row)
 
--- Error on exceeding bit length 
+-- Error on exceeding bit length
 select pg_int_to_bit_agg(i::int, 24)::text
 from (select generate_series(20, 32) as i) data;
 ERROR:  bit index 24 out of valid range (0..24)

@@ -13,6 +13,3 @@ include $(PGXS)
 performance_tester: src/performance_test.o
 	$(CC) $(CFLAGS) -o performance_tester src/performance_test.o
 
-.PHONY : clean
-clean :
-	rm -f performance_tester *.so src/*.o src/*.so *.out *.diffs 
