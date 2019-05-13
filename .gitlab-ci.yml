@@ -96,3 +96,29 @@ test_job_9.6:
     name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
   script:
   - ./test.sh
+
+test_job_10:
+  dependencies:
+  - build_job_10
+  stage: test
+  variables:
+    PG_VER: "10"
+  services:
+  - registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  script:
+  - ./test.sh
+
+test_job_11:
+  dependencies:
+  - build_job_11
+  stage: test
+  variables:
+    PG_VER: "11"
+  services:
+  - registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  script:
+  - ./test.sh
