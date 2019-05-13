@@ -90,10 +90,9 @@ test_job_9.6:
   stage: test
   variables:
     PG_VER: "9.6"
-    PGHOST: "testdb"
+    PGHOST: "registry.gitlab.com__thehyve__pg_bitcount"
   services:
-  - name: registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
-    alias: testdb
+  - registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
   image:
     name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
   script:
