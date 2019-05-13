@@ -5,9 +5,9 @@ stages:
 
 variables:
   RELEASE: "30"
-  POSTGRES_DB: nice_marmot
-  POSTGRES_USER: runner
-  POSTGRES_PASSWORD: password
+  POSTGRES_DB: "nice_marmot"
+  POSTGRES_USER: "runner"
+  POSTGRES_PASSWORD: "password"
 
 compile_job_9.6:
   variables:
@@ -89,8 +89,8 @@ test_job_9.6:
   - build_job_9.6
   stage: test
   variables:
-    PG_VER: 9.6
-    PGHOST: postgres
+    PG_VER: "9.6"
+    PGHOST: "postgres"
   services:
   - name: registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
     alias: postgres
