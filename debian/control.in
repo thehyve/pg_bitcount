@@ -1,0 +1,14 @@
+Source: pg-bitcount
+Maintainer: Gijs Kant <gijs@thehyve.nl>
+Section: database
+Priority: optional
+Standards-Version: 4.2.1
+Build-Depends: postgresql-server-dev-PGVERSION
+
+Package: postgresql-PGVERSION-pg-bitcount
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, postgresql-PGVERSION
+Homepage: https://github.com/thehyve/pg_bitcount
+Description: PostgreSQL bitcount extension
+ PostgreSQL extension providing a bitcount function and
+ an aggregate function that aggregates integers in a bit string.
