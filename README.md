@@ -38,10 +38,22 @@ PGPORT=5433 make installcheck
 
 ## Installation
 
+### From source
+
 Install the extension into the PostgreSQL library directory:
 
 ```bash
 make clean && make && sudo make install
+```
+
+### Using Docker
+
+Docker images of PostgreSQL with the `pg_bitcount` extension available
+can be found at [Docker Hub](https://hub.docker.com/r/thehyve/pg_bitcount).
+To start a Docker container with PostgreSQL 11 and expose
+the database server port at port `9432`:
+```bash
+docker run --detach --publish 9432:5432 thehyve/pg_bitcount:11
 ```
 
 
