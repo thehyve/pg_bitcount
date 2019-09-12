@@ -69,6 +69,36 @@ jobs:
           tags: true
 
     - stage: test
+      env: POSTGRESQL_VERSION=9.5
+      addons:
+        postgresql: "9.5"
+        apt:
+          packages:
+            - postgresql-server-dev-9.5
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: D6bS3ctKTKbbUrlhkV+6KWuKP/IhlrwGwyqJABho8utGDorIgF/QZKXEeVof5hGgPwcQwnMBFaM/oeldBVEJjvdlQf+z/mMOML3DGHTcXvyWeDIM3bEdZzWdkcbv3QTTgGnfLk61qbhDalG8gMJr9RbiiRGW+ez9PXkjEnTE/3MwhL5YLZI1qJbUiTgaHCgykrLw6htg4FU/CHIFZ/Sxp7BXdTZg/6UDm/hn9Aa1vMbc9pbvljCjLBpXEDOYo5Y0BxrdUIAAU+aGGA4VlYOz4JI9Ck1A8+OT7HgumdCIrlmqy/rkAX66bMZenfzZu83Lfd2CmWMs+4AY5lxZZq9EWeHuF38uUiHu+55mXbWtQQ3xnszlFw3N28bdNVhE1uCF+b1wv5APGy/3oqzW8/2sPUeZaIZczAI5UHWaYuuv2Xxprq6wzRmyr06MGn5hZCC9wBWjuBKTzvd34huGzLDkM+OS1K6RGKgnmRXkv1mv0naOkFQ2++3qDjqqdW00SJIMKltT3Ilu0kzBA5AQD2Z8KEkzz//GOD2h+TyrHptVQVJciP00WQIj10nf+8C4dWn5MWeTt/MoCjpvGoUlld5/eSrgwJQC/diiYLyUJ7/gAGQhLjEzoqrpt58RbXD2q2tAtov0Gt9HClVOoWQHWZmTRtXJTsBaVCXRqeEgvHolu/4=
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          tags: true
+
+    - stage: test
       env: POSTGRESQL_VERSION=9.6
       addons:
         postgresql: "9.6"
@@ -99,7 +129,7 @@ jobs:
           tags: true
 
     - stage: test
-      env: POSTGRESQL_VERSION=10; PGPORT=5433
+      env: POSTGRESQL_VERSION=10
       addons:
         postgresql: "10"
         apt:
