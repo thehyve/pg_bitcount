@@ -44,18 +44,95 @@ jobs:
         apt:
           packages:
             - postgresql-server-dev-9.4
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
       before_script:
         - sudo make install
       script:
         - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - apt-cache show debhelper
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
+
+    - stage: test
+      env: POSTGRESQL_VERSION=9.5
+      addons:
+        postgresql: "9.5"
+        apt:
+          packages:
+            - postgresql-server-dev-9.5
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
+
     - stage: test
       env: POSTGRESQL_VERSION=9.6
+      addons:
+        postgresql: "9.6"
+        apt:
+          packages:
+            - postgresql-server-dev-9.6
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
       before_script:
         - sudo make install
       script:
         - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
+
     - stage: test
-      env: POSTGRESQL_VERSION=10; PGPORT=5433
+      env: POSTGRESQL_VERSION=10
       addons:
         postgresql: "10"
         apt:
@@ -63,14 +140,40 @@ jobs:
             - postgresql-server-dev-10
             - postgresql-10
             - postgresql-client-10
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
       before_script:
         - sudo make install
       script:
         - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
+
     - stage: test
       env: POSTGRESQL_VERSION=11; PGPORT=5433
       addons:
         postgresql: "11"
+        apt:
+          packages:
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
       before_install:
         - sudo apt-get --yes remove postgresql-9.2
         - sudo apt-get --yes install postgresql-server-dev-11 postgresql-11 postgresql-client-11
@@ -79,3 +182,18 @@ jobs:
         - sudo make install
       script:
         - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
