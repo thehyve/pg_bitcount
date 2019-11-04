@@ -57,6 +57,21 @@ compile_job_11:
   script:
   - make
 
+compile_job_12:
+  variables:
+    PG_VER: "12"
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  stage: compile
+  artifacts:
+    name: "$CI_JOB_NAME"
+    when: on_success
+    expire_in: 1h
+    paths:
+    - pg_bitcount*
+  script:
+  - make
+
 build_job_9.6:
   dependencies:
   - compile_job_9.6
@@ -82,6 +97,16 @@ build_job_11:
   - compile_job_11
   variables:
     PG_VER: "11"
+  image: registry.gitlab.com/containertools/containertools:${RELEASE}
+  stage: build
+  script:
+  - ./build.sh
+
+build_job_12:
+  dependencies:
+  - compile_job_12
+  variables:
+    PG_VER: "12"
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
@@ -126,6 +151,19 @@ test_job_11:
   script:
   - ./test.sh
 
+test_job_12:
+  dependencies:
+  - build_job_12
+  stage: test
+  variables:
+    PG_VER: "12"
+  services:
+  - registry.gitlab.com/thehyve/pg_bitcount:${PG_VER}
+  image:
+    name: registry.gitlab.com/thehyve/ci_images/of_pg_dev:${PG_VER}
+  script:
+  - ./test.sh
+
 publish_job_9.6:
   dependencies:
   - test_job_9.6
@@ -151,6 +189,16 @@ publish_job_11:
   - test_job_11
   variables:
     PG_VER: "11"
+  image: registry.gitlab.com/containertools/containertools:${RELEASE}
+  stage: publish
+  script:
+  - ./publish.sh
+
+publish_job_12:
+  dependencies:
+  - test_job_12
+  variables:
+    PG_VER: "12"
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: publish
   script:
