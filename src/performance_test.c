@@ -5,6 +5,8 @@
 #include <time.h>
 #include "bitcount.c"
 
+#define ARRAY_SIZE 1024
+
 typedef struct
 {
     const char* name;
@@ -40,8 +42,8 @@ static void run_test(test_implementation_t implementation, uint8 *begin, uint8 *
 }
 
 static void test1(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    const int32 size = ARRAY_SIZE;
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
@@ -60,8 +62,8 @@ static void test1(test_implementation_t* implementations, int32 n) {
 }
 
 static void test2(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    const int32 size = ARRAY_SIZE;
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
@@ -80,8 +82,8 @@ static void test2(test_implementation_t* implementations, int32 n) {
 }
 
 static void test3(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    const int32 size = ARRAY_SIZE;
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
