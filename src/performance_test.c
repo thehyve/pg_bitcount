@@ -5,6 +5,8 @@
 #include <time.h>
 #include "bitcount.c"
 
+#define ARRAY_SIZE 1024
+
 typedef struct
 {
     const char* name;
@@ -40,13 +42,12 @@ static void run_test(test_implementation_t implementation, uint8 *begin, uint8 *
 }
 
 static void test1(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
 
-    for (i=0; i < size; i++) {
+    for (i=0; i < ARRAY_SIZE; i++) {
         bytes[i] = (bits8)(i % 256);
     }
 
@@ -54,19 +55,18 @@ static void test1(test_implementation_t* implementations, int32 n) {
 
     for (i=0; i < n; i++) {
         begin = &(bytes[0]);
-        end = &(bytes[size]);
+        end = &(bytes[ARRAY_SIZE]);
         run_test(implementations[i], begin, end, 4096);
     }
 }
 
 static void test2(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
 
-    for (i=0; i < size; i++) {
+    for (i=0; i < ARRAY_SIZE; i++) {
         bytes[i] = (bits8)255;
     }
 
@@ -74,19 +74,18 @@ static void test2(test_implementation_t* implementations, int32 n) {
 
     for (i=0; i < n; i++) {
         begin = &(bytes[0]);
-        end = &(bytes[size]);
-        run_test(implementations[i], begin, end, size*8);
+        end = &(bytes[ARRAY_SIZE]);
+        run_test(implementations[i], begin, end, ARRAY_SIZE*8);
     }
 }
 
 static void test3(test_implementation_t* implementations, int32 n) {
-    const int32 size = 1024;
-    bits8 bytes[size];
+    bits8 bytes[ARRAY_SIZE];
     uint8 *begin;
     uint8 *end;
     int32 i;
 
-    for (i=0; i < size; i++) {
+    for (i=0; i < ARRAY_SIZE; i++) {
         bytes[i] = (bits8)0;
     }
 
@@ -94,7 +93,7 @@ static void test3(test_implementation_t* implementations, int32 n) {
 
     for (i=0; i < n; i++) {
         begin = &(bytes[0]);
-        end = &(bytes[size]);
+        end = &(bytes[ARRAY_SIZE]);
         run_test(implementations[i], begin, end, 0);
     }
 }
