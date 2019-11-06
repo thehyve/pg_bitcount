@@ -30,9 +30,9 @@ before_install:
 
 install:
   - make
-  - make performance_tester
 
 script:
+  - make performance_tester
   - ./performance_tester
 
 jobs:
