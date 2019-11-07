@@ -4,47 +4,7 @@
 PostgreSQL extension providing a bitcount function and an aggregate function that aggregates integers in a bit string.
 
 
-## Build
-
-### Dependencies
-
-The PostgreSQL extension build tool needs to be installed.
-```bash
-# For Ubuntu/Debian:
-sudo apt install postgresql-server-dev-all
-```
-
-### Build the extension
-
-```bash
-make
-```
-
-
-### Tests
-```bash
-# Run performance tests (comparing four different implementations)
-make performance_tester && ./performance_tester
-```
-
-### Run database tests
-```bash
-# Create database role for testing
-sudo -u postgres psql -p 5433 -c "create role ${USER} with login superuser" 
-# Execute checks
-PGPORT=5433 make installcheck
-```
-
-
 ## Installation
-
-### From source
-
-Install the extension into the PostgreSQL library directory:
-
-```bash
-make clean && make && sudo make install
-```
 
 ### Using Docker
 
@@ -54,6 +14,35 @@ To start a Docker container with PostgreSQL 11 and expose
 the database server port at port `9432`:
 ```bash
 docker run --detach --publish 9432:5432 thehyve/pg_bitcount:11
+```
+
+### From Debian packages
+
+Install the extension for PostgreSQL 11 in Debian or Ubuntu:
+```bash
+wget https://github.com/thehyve/pg_bitcount/releases/download/0.0.3-1/postgresql-11-pg-bitcount_0.0.3-1_amd64.deb && \
+sudo dpkg -i postgresql-11-pg-bitcount_0.0.3-1_amd64.deb
+```
+
+### From source
+
+#### Dependencies
+
+The PostgreSQL extension build tool needs to be installed.
+```bash
+# For Ubuntu/Debian:
+sudo apt install postgresql-server-dev-all
+```
+
+#### Build
+
+Install the extension into the PostgreSQL library directory:
+
+```bash
+wget https://github.com/thehyve/pg_bitcount/archive/0.0.3-1.zip && \
+unzip 0.0.3-1.zip && \
+cd pg_bitcount-0.0.3-1 && \
+make && sudo make install
 ```
 
 
@@ -78,6 +67,29 @@ select public.pg_bitcount(public.pg_int_to_bit_agg(i::int, 24)) from (select gen
 --------|-------------------|------------------|---------------------|--------
  public | pg_bitcount       | integer          | bit                 | normal
  public | pg_int_to_bit_agg | bit              | integer, integer    | agg
+
+
+## Development
+
+### Build the extension
+
+```bash
+make
+```
+
+### Tests
+```bash
+# Run performance tests (comparing four different implementations)
+make performance_tester && ./performance_tester
+```
+
+### Run database tests
+```bash
+# Create database role for testing
+sudo -u postgres psql -p 5433 -c "create role ${USER} with login superuser" 
+# Execute checks
+PGPORT=5433 make installcheck
+```
 
 
 ## Acknowledgements
