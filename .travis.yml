@@ -38,69 +38,6 @@ script:
 jobs:
   include:
     - stage: test
-      env: POSTGRESQL_VERSION=9.4
-      addons:
-        postgresql: "9.4"
-        apt:
-          packages:
-            - postgresql-server-dev-9.4
-            - devscripts
-            - build-essential
-            - fakeroot
-            - dh-make
-      before_script:
-        - sudo make install
-      script:
-        - make installcheck
-      after_failure:
-        - cat regression.diffs
-      before_deploy:
-        - apt-cache show debhelper
-        - ./package.sh
-      deploy:
-        provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
-        file_glob: true
-        file: build/postgresql-*-pg-bitcount_*.deb
-        skip_cleanup: true
-        on:
-          repo: thehyve/pg_bitcount
-          branch: master
-          tags: true
-
-    - stage: test
-      env: POSTGRESQL_VERSION=9.5
-      addons:
-        postgresql: "9.5"
-        apt:
-          packages:
-            - postgresql-server-dev-9.5
-            - devscripts
-            - build-essential
-            - fakeroot
-            - dh-make
-      before_script:
-        - sudo make install
-      script:
-        - make installcheck
-      after_failure:
-        - cat regression.diffs
-      before_deploy:
-        - ./package.sh
-      deploy:
-        provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
-        file_glob: true
-        file: build/postgresql-*-pg-bitcount_*.deb
-        skip_cleanup: true
-        on:
-          repo: thehyve/pg_bitcount
-          branch: master
-          tags: true
-
-    - stage: test
       env: POSTGRESQL_VERSION=9.6
       addons:
         postgresql: "9.6"
@@ -111,6 +48,8 @@ jobs:
             - build-essential
             - fakeroot
             - dh-make
+      before_install:
+        - sudo apt-get --yes remove postgresql-10 postgresql-client-10
       before_script:
         - sudo make install
       script:
@@ -175,7 +114,6 @@ jobs:
             - fakeroot
             - dh-make
       before_install:
-        - sudo apt-get --yes remove postgresql-9.2
         - sudo apt-get --yes install postgresql-server-dev-11 postgresql-11 postgresql-client-11
         - sudo -u postgres psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;'
       before_script:
@@ -209,8 +147,40 @@ jobs:
             - fakeroot
             - dh-make
       before_install:
-        - sudo apt-get --yes remove postgresql-9.2
         - sudo apt-get --yes install postgresql-server-dev-12 postgresql-12 postgresql-client-12
+        - sudo -u postgres psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;'
+      before_script:
+        - sudo make install
+      script:
+        - make installcheck
+      after_failure:
+        - cat regression.diffs
+      before_deploy:
+        - ./package.sh
+      deploy:
+        provider: releases
+        api_key:
+          secure: ${RELEASE_KEY}
+        file_glob: true
+        file: build/postgresql-*-pg-bitcount_*.deb
+        skip_cleanup: true
+        on:
+          repo: thehyve/pg_bitcount
+          branch: master
+          tags: true
+
+    - stage: test
+      env: POSTGRESQL_VERSION=13; PGPORT=5433
+      addons:
+        postgresql: "13"
+        apt:
+          packages:
+            - devscripts
+            - build-essential
+            - fakeroot
+            - dh-make
+      before_install:
+        - sudo apt-get --yes install postgresql-server-dev-13 postgresql-13 postgresql-client-13
         - sudo -u postgres psql -c 'CREATE ROLE travis SUPERUSER LOGIN CREATEDB;'
       before_script:
         - sudo make install
