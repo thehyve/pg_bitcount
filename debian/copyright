@@ -4,13 +4,13 @@ Upstream-Contact: Gijs Kant <gijs@thehyve.nl>
 Source: https://github.com/thehyve/pg_bitcount
 
 Files: *
-Copyright: 2018 The Hyve B.V.
+Copyright: 2018-2021 The Hyve B.V.
 License: MIT
 
 License: MIT
  MIT License
  .
- Copyright (c) 2018 The Hyve
+ Copyright (c) 2018-2021 The Hyve
  .
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
