@@ -20,8 +20,8 @@ docker run --detach --publish 9432:5432 thehyve/pg_bitcount:11
 
 Install the extension for PostgreSQL 11 in Debian or Ubuntu:
 ```bash
-wget https://github.com/thehyve/pg_bitcount/releases/download/0.0.3-1/postgresql-11-pg-bitcount_0.0.3-1_amd64.deb && \
-sudo dpkg -i postgresql-11-pg-bitcount_0.0.3-1_amd64.deb
+wget https://github.com/thehyve/pg_bitcount/releases/download/0.0.3-2/postgresql-11-pg-bitcount_0.0.3-2_amd64.deb && \
+sudo dpkg -i postgresql-11-pg-bitcount_0.0.3-2_amd64.deb
 ```
 
 ### From source
@@ -39,9 +39,9 @@ sudo apt install postgresql-server-dev-all
 Install the extension into the PostgreSQL library directory:
 
 ```bash
-wget https://github.com/thehyve/pg_bitcount/archive/0.0.3-1.zip && \
-unzip 0.0.3-1.zip && \
-cd pg_bitcount-0.0.3-1 && \
+wget https://github.com/thehyve/pg_bitcount/archive/0.0.3-2.zip && \
+unzip 0.0.3-2.zip && \
+cd pg_bitcount-0.0.3-2 && \
 make && sudo make install
 ```
 
@@ -86,9 +86,9 @@ make performance_tester && ./performance_tester
 ### Run database tests
 ```bash
 # Create database role for testing
-sudo -u postgres psql -p 5433 -c "create role ${USER} with login superuser" 
+sudo -u postgres psql -p 5434 -c "create role ${USER} with login superuser" 
 # Execute checks
-PGPORT=5433 make installcheck
+PGPORT=5434 make installcheck
 ```
 
 
@@ -105,6 +105,6 @@ to avoid dependency on a particular compiler.
  
 ## License
 
-Copyright &copy; 2018 &nbsp; The Hyve
+Copyright &copy; 2018&ndash;2021 &nbsp; The Hyve
 
 The pg_count extension is licensed under the MIT License. See the file [LICENSE](LICENSE).
