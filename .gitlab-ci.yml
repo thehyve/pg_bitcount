@@ -5,7 +5,7 @@ stages:
 - publish
 
 variables:
-  RELEASE: "30"
+  RELEASE: "33"
   POSTGRES_DB: "nice_marmot"
   POSTGRES_USER: "runner"
   POSTGRES_PASSWORD: "password"
