@@ -95,7 +95,7 @@ build_job_9.6:
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
-  - ./build.sh
+  - buildah unshare ./build.sh
 
 build_job_10:
   dependencies:
@@ -105,7 +105,7 @@ build_job_10:
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
-  - ./build.sh
+    - buildah unshare ./build.sh
 
 build_job_11:
   dependencies:
@@ -115,7 +115,7 @@ build_job_11:
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
-  - ./build.sh
+    - buildah unshare ./build.sh
 
 build_job_12:
   dependencies:
@@ -125,7 +125,7 @@ build_job_12:
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
-  - ./build.sh
+    - buildah unshare ./build.sh
 
 build_job_13:
   dependencies:
@@ -135,7 +135,7 @@ build_job_13:
   image: registry.gitlab.com/containertools/containertools:${RELEASE}
   stage: build
   script:
-    - ./build.sh
+    - buildah unshare ./build.sh
 
 test_job_9.6:
   dependencies:
