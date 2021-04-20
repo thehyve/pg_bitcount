@@ -97,8 +97,7 @@ jobs:
         - ./package.sh
       deploy:
         provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
+        api_key: ${RELEASE_KEY}
         file_glob: true
         file: build/postgresql-*-pg-bitcount_*.deb
         skip_cleanup: true
@@ -130,8 +129,7 @@ jobs:
         - ./package.sh
       deploy:
         provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
+        api_key: ${RELEASE_KEY}
         file_glob: true
         file: build/postgresql-*-pg-bitcount_*.deb
         skip_cleanup: true
@@ -163,8 +161,7 @@ jobs:
         - ./package.sh
       deploy:
         provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
+        api_key: ${RELEASE_KEY}
         file_glob: true
         file: build/postgresql-*-pg-bitcount_*.deb
         skip_cleanup: true
@@ -196,8 +193,7 @@ jobs:
         - ./package.sh
       deploy:
         provider: releases
-        api_key:
-          secure: ${RELEASE_KEY}
+        api_key: ${RELEASE_KEY}
         file_glob: true
         file: build/postgresql-*-pg-bitcount_*.deb
         skip_cleanup: true
